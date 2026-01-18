@@ -1,5 +1,7 @@
 # Vibecraft
 
+![Vibecraft Screenshot](public/og-image.png)
+
 3D visualization of Claude Code as an interactive workshop. Watch Claude move between workstations as it uses tools.
 
 ![Three.js](https://img.shields.io/badge/Three.js-black?logo=threedotjs) ![TypeScript](https://img.shields.io/badge/TypeScript-blue?logo=typescript&logoColor=white) ![npm](https://img.shields.io/npm/v/vibecraft)
