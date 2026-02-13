@@ -1,0 +1,360 @@
+{
+  "common": {
+    "cancel": "Cancel",
+    "create": "Create",
+    "save": "Save",
+    "edit": "Edit",
+    "close": "Close",
+    "dismiss": "Dismiss",
+    "delete_label": "Delete label",
+    "send": "Send",
+    "stop": "Stop",
+    "retry": "Retry",
+    "error": "Error",
+    "loading": "Loading...",
+    "update_available": "Update Available",
+    "info": "Info",
+    "time": {
+      "just_now": "just now",
+      "seconds_ago": "{{count}}s ago",
+      "minutes_ago": "{{count}}m ago",
+      "hours_ago": "{{count}}h ago",
+      "days_ago": "{{count}}d ago",
+      "seconds": "seconds"
+    }
+  },
+  "slashes": {
+    "clear": "Clear conversation history",
+    "compact": "Compact conversation to save context",
+    "config": "View/edit configuration",
+    "cost": "Show token usage and cost",
+    "doctor": "Run diagnostics",
+    "help": "Show help",
+    "init": "Initialize CLAUDE.md",
+    "login": "Login to Anthropic",
+    "logout": "Logout from Anthropic",
+    "memory": "Edit CLAUDE.md memory",
+    "model": "Switch model",
+    "permissions": "View/edit permissions",
+    "pr_comments": "View PR comments",
+    "review": "Request code review",
+    "status": "Show status",
+    "terminal_setup": "Setup terminal integration",
+    "vim": "Toggle vim mode"
+  },
+  "hud": {
+    "settings": "Settings",
+    "tokens_used": "Tokens used this session",
+    "draw_mode": "DRAW MODE",
+    "draw_exit": "exit",
+    "draw_clear": "clear",
+    "draw_brush": "brush",
+    "draw_3d": "3D",
+    "connecting": "Connecting..."
+  },
+  "voice": {
+    "start": "Start voice input",
+    "listening": "Listening...",
+    "transcript": "Transcript:",
+    "send_hint": "Enter to send",
+    "no_speech": "No speech detected",
+    "error": "Error",
+    "unknown_error": "Unknown error",
+    "transcription_error": "Transcription error",
+    "connection_timeout": "Connection timeout",
+    "service_connection_failed": "Failed to connect to voice service",
+    "connection_failed": "Voice connection failed",
+    "not_connected": "Not connected to server",
+    "service_timeout": "Transcription service timeout",
+    "mic_denied": "Microphone access denied",
+    "not_configured": "Voice not configured (missing API key)",
+    "rate_limit": "Rate limit exceeded",
+    "missing_key_hint": "Voice disabled - set DEEPGRAM_API_KEY in .env"
+  },
+  "sessions": {
+    "all_sessions": "All Sessions",
+    "no_active": "No active sessions",
+    "waiting": "Waiting for activity",
+    "waiting_hint": "Start using Claude Code to see events here",
+    "no_activity_yet": "No activity yet",
+    "jump_latest": "Jump to latest",
+    "new_zone": "New Zone",
+    "indicator_thinking": "Claude is thinking",
+    "you": "You"
+  },
+  "sessions_list": {
+    "click_new": "Click \"+ New\" to start",
+    "session_count": "{{count}} session",
+    "session_count_plural": "{{count}} sessions",
+    "working_count": ", {{count}} working",
+    "needs_attention": "⚡ Needs attention",
+    "waiting_permission": "⏳ Waiting for permission: {{tool}}",
+    "unknown_tool": "Unknown",
+    "using_tool": "Using {{tool}}",
+    "offline_last": "Offline · was {{time}}",
+    "offline_restart": "Offline - click 🔄 to restart",
+    "ready": "Ready",
+    "not_linked": "Not linked yet",
+    "labels": {
+      "name": "Name",
+      "status": "Status",
+      "tmux": "tmux",
+      "claude_id": "Claude ID",
+      "dir": "Dir",
+      "last_active": "Last active",
+      "last_prompt": "Last prompt"
+    },
+    "actions": {
+      "restart": "Restart session",
+      "rename": "Rename",
+      "delete": "Delete"
+    },
+    "rename_prompt": "Enter new name for session:",
+    "delete_confirm": "Delete session \"{{name}}\"?",
+    "all_sessions": "all sessions",
+    "select_hint": "Select a session to send prompts",
+    "create_failed": "Failed to create session: {{error}}"
+  },
+  "feed": {
+    "show_content": "Show content",
+    "show_more": "Show more",
+    "hide_content": "Hide content",
+    "hide_more": "Hide more",
+    "search_mode": "Search Mode",
+    "query": "Query: {{query}}",
+    "pattern": "Pattern"
+  },
+  "keybinds": {
+    "focus_toggle": {
+      "name": "Toggle Focus",
+      "desc": "Switch between Workshop (3D) and Activity Feed"
+    },
+    "voice_toggle": {
+      "name": "Voice Input",
+      "desc": "Start/stop voice recording"
+    },
+    "add_btn": "Add another keybind",
+    "reset_btn": "Reset to default",
+    "press_key": "Press key..."
+  },
+  "context_menu": {
+    "create_zone": "Create zone",
+    "command": "Command",
+    "info": "Info",
+    "delete_zone": "Delete zone",
+    "move_dismiss": "Move elsewhere to dismiss"
+  },
+  "zone_info": {
+    "directory": "Directory",
+    "tmux_session": "tmux Session",
+    "created": "Created",
+    "last_activity": "Last Activity",
+    "current_tool": "Current Tool",
+    "statistics": "Statistics",
+    "tools_used": "Tools Used",
+    "files_touched": "Files Touched",
+    "subagents": "Subagents",
+    "token_usage": "Token Usage",
+    "current_conversation": "Current Conversation",
+    "cumulative": "Cumulative (Session)",
+    "git_status": "Git Status",
+    "not_git_repo": "Not a git repository",
+    "identifiers": "Identifiers",
+    "managed_id": "Managed ID",
+    "claude_session": "Claude Session",
+    "staged": "Staged",
+    "unstaged": "Unstaged",
+    "untracked": "Untracked",
+    "files": "files",
+    "working_tree_clean": "Working tree clean",
+    "lines": "lines",
+    "more": "... and {{count}} more"
+  },
+  "modals": {
+    "new_zone": {
+      "title": "New Zone",
+      "directory": "Directory",
+      "directory_placeholder": "e.g. /home/user/my-project",
+      "default": "Default",
+      "name": "Name",
+      "name_placeholder": "Auto-filled from directory...",
+      "options": "Options",
+      "continue": "Continue",
+      "skip_perms": "Skip permissions",
+      "chrome": "Chrome",
+      "other_placeholder": "Type here..."
+    },
+    "settings": {
+      "title": "Settings",
+      "audio": "Audio",
+      "volume": "Volume",
+      "spatial_audio": "Spatial Audio",
+      "spatial_hint": "Volume/pan based on zone position",
+      "privacy": "Privacy",
+      "streaming_mode": "Streaming Mode",
+      "streaming_hint": "Hide username for privacy",
+      "world": "World",
+      "grid_size": "Grid Size",
+      "grid_hint": "Number of hex rings from center. Larger = more space, may impact performance.",
+      "agent_connection": "Agent Connection",
+      "agent_hint": "Port where the Vibecraft agent is running. Changes require refresh.",
+      "sessions": "Sessions",
+      "refresh_sessions": "Refresh Sessions",
+      "keyboard_shortcuts": "Keyboard Shortcuts",
+      "shortcuts_hint": "Click a keybind to change it. Press the new key combination, or Escape to cancel.",
+      "language": "Language",
+      "port_reload_confirm": "Port changed to {{port}}. Reload page to connect to new port?"
+    },
+    "about": {
+      "title": "Vibecraft",
+      "description": "Vibecraft is a 3D visualization app for Claude Code.",
+      "subtitle": "Watch and manage your claudes in real-time - now featuring hexagonal grids!",
+      "sync_note": "Vibecraft syncs with claude code instances running on your own machine. No files or code are sent to the web server.",
+      "commands": "Commands",
+      "cmd_start": "Start server",
+      "cmd_doctor": "Diagnose issues",
+      "cmd_setup": "Reinstall hooks",
+      "cmd_uninstall": "Remove hooks",
+      "troubleshooting": "Troubleshooting",
+      "troubleshooting_text": "If a zone gets stuck, Claude Code may be waiting for input or in an unknown state. Attach to the tmux session to see what's happening:",
+      "cmd_tmux_ls": "List sessions",
+      "cmd_tmux_attach": "Attach to session",
+      "voice_input": "Voice Input",
+      "voice_hint": "To enable voice input, add your Deepgram API key to .env:",
+      "footer_credit": "Elysian Labs"
+    },
+    "question": {
+      "title": "Question",
+      "header": "Claude needs input",
+      "other_label": "Or type your own response:",
+      "other_placeholder": "Type here...",
+      "skip": "Skip"
+    },
+    "permission": {
+      "title": "Permission Required",
+      "header": "Allow {{tool}}?"
+    },
+    "zone_info": {
+      "title": "Zone Info"
+    },
+    "text_label": {
+      "title": "Add Label",
+      "placeholder": "Enter your text here...",
+      "char_count": "{{count}}/500",
+      "hint": "Enter to save, Shift+Enter for newline"
+    },
+    "timeout": {
+      "title": "Zone Not Responding",
+      "text": "The zone is taking longer than expected to start. Claude Code may be stuck or waiting for input.",
+      "hint": "Also ensure your Claude Code is up to date."
+    },
+    "notifications": {
+      "lines": "{{count}} lines",
+      "matches": "{{count}} matches",
+      "files": "{{count}} files"
+    },
+    "draw": {
+      "eraser": "Eraser",
+      "clear_all": "Clear all",
+      "smaller": "Smaller",
+      "larger": "Larger",
+      "toggle_3d": "Toggle 3D stacking",
+      "colors": {
+        "cyan": "Cyan",
+        "sky": "Sky",
+        "blue": "Blue",
+        "indigo": "Indigo",
+        "purple": "Purple",
+        "teal": "Teal"
+      }
+    },
+    "zone_command": {
+      "hint": "Enter to send",
+      "placeholder": "Command..."
+    },
+    "version": {
+      "title_required": "Update Required",
+      "title_available": "Update Available",
+      "unsupported": "Your version ({{current}}) is no longer supported.",
+      "new_available": "A new version is available: {{latest}} (you have {{current}})",
+      "release_notes": "Release Notes",
+      "dismiss": "Dismiss",
+      "copied": "Command copied to clipboard!"
+    }
+  },
+  "stations": {
+    "center": "CENTER",
+    "bookshelf": "LIBRARY",
+    "desk": "DESK",
+    "workbench": "WORKBENCH",
+    "terminal": "TERMINAL",
+    "scanner": "SCANNER",
+    "antenna": "ANTENNA",
+    "portal": "PORTAL",
+    "taskboard": "TASKBOARD"
+  },
+  "offline": {
+    "banner": "Not connected to local server",
+    "overlay_title": "Vibecraft!",
+    "overlay_desc": "Vibecraft is a 3D app to watch and manage Claude Code instances.",
+    "overlay_privacy": "Vibecraft syncs with CC instances running on your local machine. Vibecraft is an interface - no files or code are sent to this server.",
+    "get_started": "Get started:",
+    "explore": "Explore"
+  },
+  "timeline": {
+    "finished": "Finished",
+    "session_start": "Session Start",
+    "prompt": "Prompt",
+    "notification": "Notification"
+  },
+  "tools": {
+    "updating_tasks": "Updating tasks"
+  },
+  "prompt_placeholder": "Prompt...",
+  "main": {
+    "target_managed": "Prompts will be sent to {{name}}",
+    "target_session": "Prompts will be sent to session {{id}}",
+    "sessions_count": "({{count}} sessions)",
+    "status": {
+      "working": "Working",
+      "ready": "Ready",
+      "thinking": "Thinking",
+      "idle": "Idle",
+      "waiting": "Waiting",
+      "offline": "Offline",
+      "connecting": "Connecting...",
+      "disconnected": "Disconnected"
+    },
+    "activity": {
+      "using_tool": "Using {{tool}}...",
+      "tool_complete": "{{tool}} complete",
+      "tool_failed": "{{tool}} failed",
+      "processing": "Processing prompt...",
+      "session_started": "Session started",
+      "canceled": "Sending cancel command...",
+      "cancel_failed": "Failed to cancel",
+      "sent_to": "Sent to {{name}}!",
+      "failed_to_send": "Failed to send",
+      "sent_to_claude": "Sent to Claude!",
+      "saved_to": "Saved to {{path}}",
+      "tmux_error": "Saved (tmux error: {{error}})",
+      "stopped": "Stopped"
+    },
+    "camera": {
+      "modes": {
+        "focused": "Focused",
+        "overview": "Overview",
+        "follow": "Follow"
+      },
+      "labels": {
+        "all_sessions": "all sessions",
+        "auto_tracking": "auto-tracking",
+        "none": "none"
+      }
+    },
+    "error": {
+      "server_connection": "Failed to connect to Vibecraft server",
+      "connection_error": "Connection error"
+    }
+  }
+}

@@ -9,6 +9,7 @@ import { soundManager } from '../audio'
 import { escapeHtml } from './FeedManager'
 import type { WorkshopScene } from '../scene/WorkshopScene'
 import type { AttentionSystem } from '../systems/AttentionSystem'
+import i18next from '../i18n'
 
 // ============================================================================
 // Types
@@ -112,8 +113,8 @@ export function showQuestionModal(data: QuestionData): void {
   const q = data.questions[0]
   if (!q) return
 
-  if (badge) badge.textContent = q.header || 'Question'
-  if (header) header.textContent = 'Claude needs input'
+  if (badge) badge.textContent = q.header || i18next.t('modals.question.title')
+  if (header) header.textContent = i18next.t('modals.question.header')
   if (text) text.textContent = q.question
 
   // Clear previous options

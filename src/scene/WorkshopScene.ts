@@ -7,6 +7,7 @@
 
 import * as THREE from 'three'
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
+import i18next from '../i18n'
 import type { StationType, TextTile } from '../../shared/types'
 import { HexGrid } from '../utils/HexGrid'
 import { soundManager } from '../audio'
@@ -2100,15 +2101,15 @@ export class WorkshopScene {
       label: string
       color: number
     }> = [
-      { type: 'center', position: [0, 0, 0], label: 'Center', color: zoneColor },
-      { type: 'bookshelf', position: [0, 0, -4], label: 'Library', color: 0x2a4a5a },      // Dark teal
-      { type: 'desk', position: [4, 0, 0], label: 'Desk', color: 0x3a4a5a },              // Blue-gray
-      { type: 'workbench', position: [-4, 0, 0], label: 'Workbench', color: 0x3a4a55 },   // Steel blue
-      { type: 'terminal', position: [0, 0, 4], label: 'Terminal', color: 0x1a2a3a },      // Dark blue
-      { type: 'scanner', position: [3, 0, -3], label: 'Scanner', color: 0x2a4a6a },       // Blue
-      { type: 'antenna', position: [-3, 0, -3], label: 'Antenna', color: 0x3a5a6a },      // Teal
-      { type: 'portal', position: [-3, 0, 3], label: 'Portal', color: 0x3a4a6a },         // Deep blue
-      { type: 'taskboard', position: [3, 0, 3], label: 'Task Board', color: 0x3a4a5a },   // Blue-gray
+      { type: 'center', position: [0, 0, 0], label: i18next.t('stations.center'), color: zoneColor },
+      { type: 'bookshelf', position: [0, 0, -4], label: i18next.t('stations.bookshelf'), color: 0x2a4a5a },      // Dark teal
+      { type: 'desk', position: [4, 0, 0], label: i18next.t('stations.desk'), color: 0x3a4a5a },              // Blue-gray
+      { type: 'workbench', position: [-4, 0, 0], label: i18next.t('stations.workbench'), color: 0x3a4a55 },   // Steel blue
+      { type: 'terminal', position: [0, 0, 4], label: i18next.t('stations.terminal'), color: 0x1a2a3a },      // Dark blue
+      { type: 'scanner', position: [3, 0, -3], label: i18next.t('stations.scanner'), color: 0x2a4a6a },       // Blue
+      { type: 'antenna', position: [-3, 0, -3], label: i18next.t('stations.antenna'), color: 0x3a5a6a },      // Teal
+      { type: 'portal', position: [-3, 0, 3], label: i18next.t('stations.portal'), color: 0x3a4a6a },         // Deep blue
+      { type: 'taskboard', position: [3, 0, 3], label: i18next.t('stations.taskboard'), color: 0x3a4a5a },   // Blue-gray
     ]
 
     for (const config of stationConfigs) {

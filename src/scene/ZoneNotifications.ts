@@ -12,6 +12,7 @@
  */
 
 import * as THREE from 'three'
+import i18next from '../i18n'
 
 // ============================================================================
 // Types
@@ -351,7 +352,7 @@ export function formatFileChange(
   const parts: string[] = []
   if (options.added && options.added > 0) parts.push(`+${options.added}`)
   if (options.removed && options.removed > 0) parts.push(`-${options.removed}`)
-  if (options.lines) parts.push(`${options.lines} lines`)
+  if (options.lines) parts.push(i18next.t('notifications.lines', { count: options.lines }))
 
   return parts.length > 0 ? `${fileName} ${parts.join(', ')}` : fileName
 }
@@ -372,7 +373,7 @@ export function formatCommandResult(command: string, maxLength = 30): string {
 export function formatSearchResult(pattern: string, matchCount?: number): string {
   const truncatedPattern = pattern.length > 20 ? pattern.slice(0, 17) + '...' : pattern
   if (matchCount !== undefined) {
-    return `"${truncatedPattern}" → ${matchCount} matches`
+    return `"${truncatedPattern}" → ${i18next.t('notifications.matches', { count: matchCount })}`
   }
   return `"${truncatedPattern}"`
 }

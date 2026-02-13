@@ -5,6 +5,7 @@
  * --dangerously-skip-permissions and need user approval for tools.
  */
 
+import i18next from 'i18next'
 import { soundManager } from '../audio'
 import { escapeHtml } from './FeedManager'
 import type { WorkshopScene } from '../scene/WorkshopScene'
@@ -94,7 +95,7 @@ export function showPermissionModal(
   options: PermissionOption[]
 ): void {
   const modal = document.getElementById('permission-modal')
-  const toolName = document.getElementById('permission-tool')
+  const headerEl = document.getElementById('permission-header')
   const contextEl = document.getElementById('permission-context')
   const buttonsContainer = document.getElementById('permission-buttons')
 
@@ -102,7 +103,7 @@ export function showPermissionModal(
 
   currentPermission = { sessionId, tool, context: permContext, options }
 
-  if (toolName) toolName.textContent = tool
+  if (headerEl) headerEl.textContent = i18next.t('modals.permission.header', { tool })
   if (contextEl) contextEl.textContent = permContext
 
   // Generate buttons dynamically

@@ -6,6 +6,8 @@
  * an update is available.
  */
 
+import i18next from '../i18n'
+
 interface VersionInfo {
   latest: string
   minSupported: string
@@ -118,10 +120,10 @@ function showUpdateBanner(
   banner.className = isUnsupported ? 'version-banner version-banner-critical' : 'version-banner'
 
   const icon = isUnsupported ? '⚠️' : '✨'
-  const title = isUnsupported ? 'Update Required' : 'Update Available'
+  const title = isUnsupported ? i18next.t('modals.version.title_required') : i18next.t('modals.version.title_available')
   const message = isUnsupported
-    ? `Your version (${currentVersion}) is no longer supported.`
-    : `A new version is available: ${versionInfo.latest} (you have ${currentVersion})`
+    ? i18next.t('modals.version.unsupported', { current: currentVersion })
+    : i18next.t('modals.version.new_available', { latest: versionInfo.latest, current: currentVersion })
 
   banner.innerHTML = `
     <div class="version-banner-content">
@@ -130,8 +132,8 @@ function showUpdateBanner(
         <strong>${title}</strong> - ${message}
       </span>
       <code class="version-banner-command">${versionInfo.updateCommand}</code>
-      <a href="${versionInfo.releaseUrl}" target="_blank" class="version-banner-link">Release Notes</a>
-      <button class="version-banner-dismiss" title="Dismiss">×</button>
+      <a href="${versionInfo.releaseUrl}" target="_blank" class="version-banner-link">${i18next.t('modals.version.release_notes')}</a>
+      <button class="version-banner-dismiss" title="${i18next.t('modals.version.dismiss')}">×</button>
     </div>
   `
 
@@ -257,7 +259,7 @@ function showUpdateBanner(
   commandEl?.addEventListener('click', () => {
     navigator.clipboard.writeText(versionInfo.updateCommand)
     const originalText = commandEl.textContent
-    commandEl.textContent = 'Copied!'
+    commandEl.textContent = i18next.t('modals.version.copied')
     setTimeout(() => {
       commandEl.textContent = originalText
     }, 1500)

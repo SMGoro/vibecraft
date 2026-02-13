@@ -6,6 +6,7 @@
  */
 
 import { soundManager } from '../audio/SoundManager'
+import i18next from '../i18n'
 
 // ============================================================================
 // Types
@@ -96,15 +97,15 @@ export function showTextLabelModal(options: TextLabelModalOptions = {}): Promise
 
   if (!modal || !textarea) {
     // Fallback to browser prompt if modal doesn't exist
-    return Promise.resolve(prompt(options.title || 'Enter text:', options.initialText || ''))
+    return Promise.resolve(prompt(options.title || i18next.t('text_label.title'), options.initialText || ''))
   }
 
   // Configure modal
   if (title) {
-    title.textContent = options.title || 'Add Label'
+    title.textContent = options.title || i18next.t('text_label.title')
   }
 
-  textarea.placeholder = options.placeholder || 'Enter your text here...'
+  textarea.placeholder = options.placeholder || i18next.t('text_label.placeholder')
   textarea.value = options.initialText || ''
   textarea.maxLength = options.maxLength || 500
 
@@ -154,7 +155,7 @@ function updateCharCount(textarea: HTMLTextAreaElement | null, charCount: HTMLEl
   if (!textarea || !charCount) return
   const current = textarea.value.length
   const max = textarea.maxLength || 500
-  charCount.textContent = `${current}/${max}`
+  charCount.textContent = i18next.t('text_label.char_count', { count: current })
 
   // Color feedback
   if (current > max * 0.9) {

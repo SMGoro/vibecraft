@@ -7,6 +7,7 @@
 
 import * as THREE from 'three'
 import type { StationType } from '../../shared/types'
+import i18next from '../i18n'
 
 export interface ToolHistoryItem {
   text: string // "npm test" or "config.ts"
@@ -20,20 +21,25 @@ interface StationPanel {
   needsUpdate: boolean
 }
 
-// Station display names and colors
+// Get localized station name
+function getStationName(type: StationType): string {
+  return i18next.t(`stations.${type}`).toUpperCase()
+}
+
+// Station display names and colors (name removed as it is now dynamic)
 const STATION_CONFIG: Record<
   StationType,
-  { name: string; color: string; icon: string }
+  { color: string; icon: string }
 > = {
-  center: { name: 'CENTER', color: '#4ac8e8', icon: '' },
-  bookshelf: { name: 'LIBRARY', color: '#fbbf24', icon: '' },
-  desk: { name: 'DESK', color: '#4ade80', icon: '' },
-  workbench: { name: 'WORKBENCH', color: '#f97316', icon: '' },
-  terminal: { name: 'TERMINAL', color: '#22d3ee', icon: '' },
-  scanner: { name: 'SCANNER', color: '#60a5fa', icon: '' },
-  antenna: { name: 'ANTENNA', color: '#4ac8e8', icon: '' },
-  portal: { name: 'PORTAL', color: '#22d3d8', icon: '' },
-  taskboard: { name: 'TASKBOARD', color: '#fb923c', icon: '' },
+  center: { color: '#4ac8e8', icon: '' },
+  bookshelf: { color: '#fbbf24', icon: '' },
+  desk: { color: '#4ade80', icon: '' },
+  workbench: { color: '#f97316', icon: '' },
+  terminal: { color: '#22d3ee', icon: '' },
+  scanner: { color: '#60a5fa', icon: '' },
+  antenna: { color: '#4ac8e8', icon: '' },
+  portal: { color: '#22d3d8', icon: '' },
+  taskboard: { color: '#fb923c', icon: '' },
 }
 
 // Station positions (relative to zone center)
@@ -163,6 +169,18 @@ export class StationPanels {
   }
 
   /**
+   * Force re-render of all panels (e.g. after language change)
+   */
+  updateAll(): void {
+    for (const [, zonePanels] of this.panels) {
+      for (const [stationType, panel] of zonePanels) {
+        this.renderPanel(panel, stationType)
+        panel.needsUpdate = false
+      }
+    }
+  }
+
+  /**
    * Update panels that need re-rendering
    */
   update(): void {
@@ -251,7 +269,7 @@ export class StationPanels {
     ctx.font = 'bold 16px system-ui, -apple-system, sans-serif'
     ctx.textAlign = 'left'
     ctx.textBaseline = 'top'
-    ctx.fillText(config.name, 20, 20)
+    ctx.fillText(getStationName(stationType), 20, 20)
 
     // Divider
     ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)'
@@ -268,7 +286,7 @@ export class StationPanels {
     if (history.length === 0) {
       ctx.fillStyle = 'rgba(255, 255, 255, 0.4)'
       ctx.font = '13px system-ui, -apple-system, sans-serif'
-      ctx.fillText('No activity yet', 20, startY + 8)
+      ctx.fillText(i18next.t('sessions.no_activity_yet', { defaultValue: 'No activity yet' }), 20, startY + 8)
     } else {
       ctx.font = '13px system-ui, -apple-system, sans-serif'
 

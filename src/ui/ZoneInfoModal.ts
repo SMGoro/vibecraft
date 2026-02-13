@@ -7,6 +7,7 @@
 import type { ManagedSession, GitStatus } from '../../shared/types'
 import { soundManager } from '../audio'
 import { formatTimeAgo } from './FeedManager'
+import i18next from '../i18n'
 
 // ============================================================================
 // Types
@@ -104,34 +105,38 @@ function renderContent(data: ZoneInfoData): void {
   const { managedSession: s, stats } = data
   const filesTouched = stats?.filesTouched ? Array.from(stats.filesTouched) : []
 
+  // Get localized status
+  const statusKey = s.status === 'offline' ? 'ready' : s.status; // map offline to ready style-wise or use specialized label
+  const localizedStatus = i18next.t(`main.status.${s.status}`);
+
   content.innerHTML = `
     <!-- Header -->
     <div class="zone-info-header">
       <div class="zone-info-name">${escapeHtml(s.name)}</div>
-      <div class="zone-info-status zone-info-status--${s.status}">${s.status}</div>
+      <div class="zone-info-status zone-info-status--${s.status}">${localizedStatus}</div>
     </div>
 
     <!-- Basic Info -->
     <div class="zone-info-section">
       <div class="zone-info-row">
-        <span class="zone-info-label">Directory</span>
+        <span class="zone-info-label">${i18next.t('zone_info.directory')}</span>
         <span class="zone-info-value zone-info-mono">${escapeHtml(s.cwd || '~')}</span>
       </div>
       <div class="zone-info-row">
-        <span class="zone-info-label">tmux Session</span>
+        <span class="zone-info-label">${i18next.t('zone_info.tmux_session')}</span>
         <span class="zone-info-value zone-info-mono">${escapeHtml(s.tmuxSession)}</span>
       </div>
       <div class="zone-info-row">
-        <span class="zone-info-label">Created</span>
+        <span class="zone-info-label">${i18next.t('zone_info.created')}</span>
         <span class="zone-info-value">${formatTimeAgo(s.createdAt)}</span>
       </div>
       <div class="zone-info-row">
-        <span class="zone-info-label">Last Activity</span>
+        <span class="zone-info-label">${i18next.t('zone_info.last_activity')}</span>
         <span class="zone-info-value">${formatTimeAgo(s.lastActivity)}</span>
       </div>
       ${s.currentTool ? `
       <div class="zone-info-row">
-        <span class="zone-info-label">Current Tool</span>
+        <span class="zone-info-label">${i18next.t('zone_info.current_tool')}</span>
         <span class="zone-info-value zone-info-highlight">${escapeHtml(s.currentTool)}</span>
       </div>
       ` : ''}
@@ -139,19 +144,19 @@ function renderContent(data: ZoneInfoData): void {
 
     <!-- Stats -->
     <div class="zone-info-section">
-      <div class="zone-info-section-title">Statistics</div>
+      <div class="zone-info-section-title">${i18next.t('zone_info.statistics')}</div>
       <div class="zone-info-stats-grid">
         <div class="zone-info-stat">
           <div class="zone-info-stat-value">${stats?.toolsUsed ?? 0}</div>
-          <div class="zone-info-stat-label">Tools Used</div>
+          <div class="zone-info-stat-label">${i18next.t('zone_info.tools_used')}</div>
         </div>
         <div class="zone-info-stat">
           <div class="zone-info-stat-value">${filesTouched.length}</div>
-          <div class="zone-info-stat-label">Files Touched</div>
+          <div class="zone-info-stat-label">${i18next.t('zone_info.files_touched')}</div>
         </div>
         <div class="zone-info-stat">
           <div class="zone-info-stat-value">${stats?.activeSubagents ?? 0}</div>
-          <div class="zone-info-stat-label">Subagents</div>
+          <div class="zone-info-stat-label">${i18next.t('zone_info.subagents')}</div>
         </div>
       </div>
     </div>
@@ -159,14 +164,14 @@ function renderContent(data: ZoneInfoData): void {
     <!-- Tokens -->
     ${s.tokens ? `
     <div class="zone-info-section">
-      <div class="zone-info-section-title">Token Usage</div>
+      <div class="zone-info-section-title">${i18next.t('zone_info.token_usage')}</div>
       <div class="zone-info-tokens">
         <div class="zone-info-token-row">
-          <span>Current Conversation</span>
+          <span>${i18next.t('zone_info.current_conversation')}</span>
           <span class="zone-info-token-value">${formatNumber(s.tokens.current)}</span>
         </div>
         <div class="zone-info-token-row">
-          <span>Cumulative (Session)</span>
+          <span>${i18next.t('zone_info.cumulative')}</span>
           <span class="zone-info-token-value">${formatNumber(s.tokens.cumulative)}</span>
         </div>
       </div>
@@ -176,21 +181,21 @@ function renderContent(data: ZoneInfoData): void {
     <!-- Git Status -->
     ${s.gitStatus?.isRepo ? renderGitStatus(s.gitStatus) : `
     <div class="zone-info-section">
-      <div class="zone-info-section-title">Git Status</div>
-      <div class="zone-info-muted">Not a git repository</div>
+      <div class="zone-info-section-title">${i18next.t('zone_info.git_status')}</div>
+      <div class="zone-info-muted">${i18next.t('zone_info.not_git_repo')}</div>
     </div>
     `}
 
     <!-- Files Touched -->
     ${filesTouched.length > 0 ? `
     <div class="zone-info-section">
-      <div class="zone-info-section-title">Files Touched (${filesTouched.length})</div>
+      <div class="zone-info-section-title">${i18next.t('zone_info.files_touched')} (${filesTouched.length})</div>
       <div class="zone-info-files">
         ${filesTouched.slice(0, 10).map(f => `
           <div class="zone-info-file">${escapeHtml(shortenPath(f))}</div>
         `).join('')}
         ${filesTouched.length > 10 ? `
-          <div class="zone-info-file zone-info-muted">... and ${filesTouched.length - 10} more</div>
+          <div class="zone-info-file zone-info-muted">${i18next.t('zone_info.more', { count: filesTouched.length - 10 })}</div>
         ` : ''}
       </div>
     </div>
@@ -198,14 +203,14 @@ function renderContent(data: ZoneInfoData): void {
 
     <!-- IDs (for debugging) -->
     <div class="zone-info-section zone-info-ids">
-      <div class="zone-info-section-title">Identifiers</div>
+      <div class="zone-info-section-title">${i18next.t('zone_info.identifiers')}</div>
       <div class="zone-info-row">
-        <span class="zone-info-label">Managed ID</span>
+        <span class="zone-info-label">${i18next.t('zone_info.managed_id')}</span>
         <span class="zone-info-value zone-info-mono zone-info-small">${s.id}</span>
       </div>
       ${s.claudeSessionId ? `
       <div class="zone-info-row">
-        <span class="zone-info-label">Claude Session</span>
+        <span class="zone-info-label">${i18next.t('zone_info.claude_session')}</span>
         <span class="zone-info-value zone-info-mono zone-info-small">${s.claudeSessionId}</span>
       </div>
       ` : ''}
@@ -220,7 +225,7 @@ function renderGitStatus(git: GitStatus): string {
 
   return `
     <div class="zone-info-section">
-      <div class="zone-info-section-title">Git Status</div>
+      <div class="zone-info-section-title">${i18next.t('zone_info.git_status')}</div>
 
       <!-- Branch -->
       <div class="zone-info-git-branch">
@@ -234,7 +239,7 @@ function renderGitStatus(git: GitStatus): string {
       <!-- Changes -->
       ${stagedTotal > 0 ? `
       <div class="zone-info-git-changes">
-        <span class="zone-info-changes-label">Staged</span>
+        <span class="zone-info-changes-label">${i18next.t('zone_info.staged')}</span>
         <span class="zone-info-changes-detail">
           ${git.staged.added > 0 ? `<span class="zone-info-added">+${git.staged.added}</span>` : ''}
           ${git.staged.modified > 0 ? `<span class="zone-info-modified">~${git.staged.modified}</span>` : ''}
@@ -245,7 +250,7 @@ function renderGitStatus(git: GitStatus): string {
 
       ${unstagedTotal > 0 ? `
       <div class="zone-info-git-changes">
-        <span class="zone-info-changes-label">Unstaged</span>
+        <span class="zone-info-changes-label">${i18next.t('zone_info.unstaged')}</span>
         <span class="zone-info-changes-detail">
           ${git.unstaged.added > 0 ? `<span class="zone-info-added">+${git.unstaged.added}</span>` : ''}
           ${git.unstaged.modified > 0 ? `<span class="zone-info-modified">~${git.unstaged.modified}</span>` : ''}
@@ -256,13 +261,13 @@ function renderGitStatus(git: GitStatus): string {
 
       ${git.untracked > 0 ? `
       <div class="zone-info-git-changes">
-        <span class="zone-info-changes-label">Untracked</span>
-        <span class="zone-info-changes-detail zone-info-muted">${git.untracked} files</span>
+        <span class="zone-info-changes-label">${i18next.t('zone_info.untracked')}</span>
+        <span class="zone-info-changes-detail zone-info-muted">${git.untracked} ${i18next.t('zone_info.files')}</span>
       </div>
       ` : ''}
 
       ${!isDirty ? `
-      <div class="zone-info-git-clean">Working tree clean</div>
+      <div class="zone-info-git-clean">${i18next.t('zone_info.working_tree_clean')}</div>
       ` : ''}
 
       <!-- Lines changed -->
@@ -270,7 +275,7 @@ function renderGitStatus(git: GitStatus): string {
       <div class="zone-info-git-lines">
         ${git.linesAdded > 0 ? `<span class="zone-info-added">+${git.linesAdded}</span>` : ''}
         ${git.linesRemoved > 0 ? `<span class="zone-info-deleted">-${git.linesRemoved}</span>` : ''}
-        <span class="zone-info-muted">lines</span>
+        <span class="zone-info-muted">${i18next.t('zone_info.lines')}</span>
       </div>
       ` : ''}
 

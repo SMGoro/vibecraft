@@ -8,6 +8,7 @@
  */
 
 import { soundManager } from '../audio/SoundManager'
+import i18next from '../i18n'
 
 export interface DrawColor {
   id: string
@@ -306,13 +307,14 @@ class DrawModeManager {
     // Generate color buttons
     const colorsHtml = DRAW_COLORS.map((color, index) => {
       const hexColor = '#' + color.color.toString(16).padStart(6, '0')
+      const localizedName = i18next.t(`draw.colors.${color.id}`)
       return `
         <button
           type="button"
           class="draw-color-btn${index === 0 ? ' selected' : ''}"
           data-color-index="${index}"
           style="--color: ${hexColor}"
-          title="${color.name} (${color.key})"
+          title="${localizedName} (${color.key})"
         >
           <span class="draw-color-key">${color.key}</span>
         </button>
@@ -324,10 +326,10 @@ class DrawModeManager {
       <button
         type="button"
         class="draw-eraser-btn"
-        title="Eraser (0)"
+        title="${i18next.t('draw.eraser')} (${ERASER_KEY})"
       >
         <span class="draw-eraser-icon">✕</span>
-        <span class="draw-color-key">0</span>
+        <span class="draw-color-key">${ERASER_KEY}</span>
       </button>
     `
 
@@ -336,7 +338,7 @@ class DrawModeManager {
       <button
         type="button"
         class="draw-clear-btn"
-        title="Clear all (X)"
+        title="${i18next.t('draw.clear_all')} (X)"
       >
         <span class="draw-clear-icon">🗑</span>
       </button>
@@ -345,9 +347,9 @@ class DrawModeManager {
     // Add brush size controls
     const brushSizeHtml = `
       <div class="draw-brush-size">
-        <button type="button" class="draw-brush-btn draw-brush-minus" title="Smaller (Q)">−</button>
+        <button type="button" class="draw-brush-btn draw-brush-minus" title="${i18next.t('draw.smaller')} (Q)">−</button>
         <span class="draw-brush-size-value">${this.state.brushSize}</span>
-        <button type="button" class="draw-brush-btn draw-brush-plus" title="Larger (E)">+</button>
+        <button type="button" class="draw-brush-btn draw-brush-plus" title="${i18next.t('draw.larger')} (E)">+</button>
       </div>
     `
 
@@ -356,7 +358,7 @@ class DrawModeManager {
       <button
         type="button"
         class="draw-3d-toggle${this.state.is3DMode ? ' active' : ''}"
-        title="Toggle 3D stacking (R)"
+        title="${i18next.t('draw.toggle_3d')} (R)"
       >
         <span class="draw-3d-icon">3D</span>
       </button>

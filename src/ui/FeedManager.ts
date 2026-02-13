@@ -10,6 +10,7 @@
 
 import { getToolIcon } from '../utils/ToolUtils'
 import type { ClaudeEvent, PreToolUseEvent, PostToolUseEvent } from '../../shared/types'
+import i18next from '../i18n'
 
 export class FeedManager {
   private feedEl: HTMLElement | null = null
@@ -144,7 +145,7 @@ export class FeedManager {
     item.innerHTML = `
       <div class="feed-item-header">
         <div class="feed-item-icon thinking-icon">🤔</div>
-        <div class="feed-item-title">Claude is thinking</div>
+        <div class="feed-item-title">${i18next.t('sessions.indicator_thinking')}</div>
         <div class="thinking-dots"><span>.</span><span>.</span><span>.</span></div>
       </div>
     `
@@ -231,7 +232,7 @@ export class FeedManager {
         item.innerHTML = `
           <div class="feed-item-header">
             <div class="feed-item-icon">💬</div>
-            <div class="feed-item-title">You</div>
+            <div class="feed-item-title">${i18next.t('sessions.you')}</div>
             <div class="feed-item-time">${new Date(event.timestamp).toLocaleTimeString()}</div>
           </div>
           <div class="feed-item-content prompt-text">${escapeHtml(promptText)}</div>
@@ -269,9 +270,9 @@ export class FeedManager {
         } else if (command) {
           preview = `<div class="feed-item-code">${escapeHtml(command)}</div>`
         } else if (pattern) {
-          preview = `<div class="feed-item-file">Pattern: ${escapeHtml(pattern)}</div>`
+          preview = `<div class="feed-item-file">${i18next.t('feed.pattern') || 'Pattern'}: ${escapeHtml(pattern)}</div>`
         } else if (query) {
-          preview = `<div class="feed-item-file">Query: ${escapeHtml(query.slice(0, 100))}</div>`
+          preview = `<div class="feed-item-file">${i18next.t('feed.query', { query: escapeHtml(query.slice(0, 100)) })}</div>`
         }
 
         let details = ''
@@ -281,7 +282,7 @@ export class FeedManager {
             <div class="feed-item-details collapsed" id="details-${e.toolUseId}">
               <div class="feed-item-code">${escapeHtml(truncated)}</div>
             </div>
-            <div class="expand-toggle" data-target="details-${e.toolUseId}">▶ Show content</div>
+            <div class="expand-toggle" data-target="details-${e.toolUseId}">▶ ${i18next.t('feed.show_content')}</div>
           `
         }
 
@@ -304,7 +305,7 @@ export class FeedManager {
               <div class="feed-item-assistant-text ${isLong ? 'collapsed' : ''}" id="assistant-text-${e.toolUseId}">
                 ${textContent}
               </div>
-              ${isLong ? `<div class="expand-toggle" data-target="assistant-text-${e.toolUseId}">▶ Show more</div>` : ''}
+              ${isLong ? `<div class="expand-toggle" data-target="assistant-text-${e.toolUseId}">▶ ${i18next.t('feed.show_more')}</div>` : ''}
             `
           }
         }
@@ -405,7 +406,7 @@ export class FeedManager {
               <div class="feed-item-title">Claude</div>
               <div class="feed-item-time">${new Date(event.timestamp).toLocaleTimeString()}</div>
             </div>
-            <div class="feed-item-content assistant-text">${renderMarkdown(displayResponse)}${isLong ? '<span class="show-more">... [show more - Alt+E]</span>' : ''}</div>
+            <div class="feed-item-content assistant-text">${renderMarkdown(displayResponse)}${isLong ? `<span class="show-more">... [${i18next.t('feed.show_more')} - Alt+E]</span>` : ''}</div>
           `
           // Add click handler for "show more"
           if (isLong) {
@@ -425,7 +426,7 @@ export class FeedManager {
           item.innerHTML = `
             <div class="feed-item-header">
               <div class="feed-item-icon">🏁</div>
-              <div class="feed-item-title">Stopped</div>
+              <div class="feed-item-title">${i18next.t('main.activity.stopped')}</div>
               <div class="feed-item-time">${new Date(event.timestamp).toLocaleTimeString()}</div>
             </div>
           `
@@ -465,7 +466,11 @@ export class FeedManager {
         const details = document.getElementById(targetId)
         if (details) {
           const isCollapsed = details.classList.toggle('collapsed')
-          toggle.textContent = isCollapsed ? '▶ Show content' : '▼ Hide content'
+          if (targetId.startsWith('details-')) {
+            toggle.textContent = isCollapsed ? `▶ ${i18next.t('feed.show_content')}` : `▼ ${i18next.t('feed.hide_content')}`
+          } else {
+            toggle.textContent = isCollapsed ? `▶ ${i18next.t('feed.show_more')}` : `▼ ${i18next.t('feed.hide_more')}`
+          }
         }
       })
     })
@@ -514,14 +519,14 @@ export function formatTokens(tokens: number): string {
  */
 export function formatTimeAgo(timestamp: number): string {
   const seconds = Math.floor((Date.now() - timestamp) / 1000)
-  if (seconds < 30) return 'just now'
-  if (seconds < 60) return `${seconds}s ago`
+  if (seconds < 30) return i18next.t('common.time.just_now')
+  if (seconds < 60) return i18next.t('common.time.seconds_ago', { count: seconds })
   const minutes = Math.floor(seconds / 60)
-  if (minutes < 60) return `${minutes}m ago`
+  if (minutes < 60) return i18next.t('common.time.minutes_ago', { count: minutes })
   const hours = Math.floor(minutes / 60)
-  if (hours < 24) return `${hours}h ago`
+  if (hours < 24) return i18next.t('common.time.hours_ago', { count: hours })
   const days = Math.floor(hours / 24)
-  return `${days}d ago`
+  return i18next.t('common.time.days_ago', { count: days })
 }
 
 /**

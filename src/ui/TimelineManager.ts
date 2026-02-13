@@ -9,6 +9,7 @@
 
 import { getToolIcon } from '../utils/ToolUtils'
 import type { ClaudeEvent, PreToolUseEvent, PostToolUseEvent } from '../../shared/types'
+import i18next from '../i18n'
 
 export class TimelineManager {
   private timelineEl: HTMLElement | null = null
@@ -156,19 +157,19 @@ export class TimelineManager {
       }
       case 'stop':
         emoji = '🏁'
-        toolName = 'Finished'
+        toolName = i18next.t('timeline.finished')
         break
       case 'session_start':
         emoji = '🚀'
-        toolName = 'Session Start'
+        toolName = i18next.t('timeline.session_start')
         break
       case 'user_prompt_submit':
         emoji = '💬'
-        toolName = 'Prompt'
+        toolName = i18next.t('timeline.prompt')
         break
       case 'notification':
         emoji = '🔔'
-        toolName = 'Notification'
+        toolName = i18next.t('timeline.notification')
         break
       default:
         toolName = event.type

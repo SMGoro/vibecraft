@@ -9,6 +9,7 @@ import {
   type Keybind,
   type KeybindAction,
 } from './KeybindConfig'
+import i18next from '../i18n'
 
 let editingActionId: string | null = null
 let editingElement: HTMLElement | null = null
@@ -39,9 +40,11 @@ function renderKeybindSettings(): void {
 
   const actions = keybindManager.getEditableActions()
 
-  container.innerHTML = actions.map(action => `
+  container.innerHTML = actions.map(action => {
+    const actionKey = action.id.replace('-', '_');
+    return `
     <div class="keybind-row" data-action-id="${action.id}">
-      <span class="keybind-name">${action.name}</span>
+      <span class="keybind-name">${i18next.t(`keybinds.${actionKey}.name`)}</span>
       <div class="keybind-keys">
         ${action.bindings.map((binding, index) => `
           <button
@@ -49,24 +52,24 @@ function renderKeybindSettings(): void {
             class="keybind-key${editingActionId === action.id ? ' editing' : ''}"
             data-action-id="${action.id}"
             data-binding-index="${index}"
-            title="${action.description}"
+            title="${i18next.t(`keybinds.${actionKey}.desc`)}"
           >${formatKeybind(binding)}</button>
         `).join('')}
         <button
           type="button"
           class="keybind-add"
           data-action-id="${action.id}"
-          title="Add another keybind"
+          title="${i18next.t('keybinds.add_btn')}"
         >+</button>
       </div>
       <button
         type="button"
         class="keybind-reset"
         data-action-id="${action.id}"
-        title="Reset to default"
+        title="${i18next.t('keybinds.reset_btn')}"
       >↺</button>
     </div>
-  `).join('')
+  `}).join('')
 
   // Add click handlers
   container.querySelectorAll('.keybind-key').forEach(btn => {
@@ -104,7 +107,7 @@ function handleKeybindClick(e: Event): void {
 
   // Update UI to show editing state
   target.classList.add('editing')
-  target.textContent = 'Press key...'
+  target.textContent = i18next.t('keybinds.press_key')
 }
 
 /**
@@ -121,7 +124,7 @@ function handleAddKeybind(e: Event): void {
   editingElement = target
 
   target.classList.add('editing')
-  target.textContent = 'Press key...'
+  target.textContent = i18next.t('keybinds.press_key')
 }
 
 /**

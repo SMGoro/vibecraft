@@ -1,0 +1,360 @@
+{
+  "common": {
+    "cancel": "取消",
+    "create": "创建",
+    "save": "保存",
+    "edit": "编辑",
+    "close": "关闭",
+    "dismiss": "关闭",
+    "delete_label": "删除标签",
+    "send": "发送",
+    "stop": "停止",
+    "retry": "重试",
+    "error": "错误",
+    "loading": "加载中...",
+    "update_available": "有更新可用",
+    "info": "详情",
+    "time": {
+      "just_now": "刚刚",
+      "seconds_ago": "{{count}} 秒前",
+      "minutes_ago": "{{count}} 分钟前",
+      "hours_ago": "{{count}} 小时前",
+      "days_ago": "{{count}} 天前",
+      "seconds": "秒"
+    }
+  },
+  "slashes": {
+    "clear": "清空对话历史",
+    "compact": "压缩对话以节省上下文",
+    "config": "查看/编辑配置",
+    "cost": "显示 Token 使用情况和成本",
+    "doctor": "运行诊断",
+    "help": "显示帮助",
+    "init": "初始化 CLAUDE.md",
+    "login": "登录到 Anthropic",
+    "logout": "注销 Anthropic",
+    "memory": "编辑 CLAUDE.md 记忆",
+    "model": "切换模型",
+    "permissions": "查看/编辑权限",
+    "pr_comments": "查看 PR 评论",
+    "review": "请求代码审查",
+    "status": "显示状态",
+    "terminal_setup": "设置终端集成",
+    "vim": "切换 Vim 模式"
+  },
+  "hud": {
+    "settings": "设置",
+    "tokens_used": "本次会话已使用 Token",
+    "draw_mode": "绘制模式",
+    "draw_exit": "退出",
+    "draw_clear": "清空",
+    "draw_brush": "画笔",
+    "draw_3d": "3D",
+    "connecting": "连接中..."
+  },
+  "voice": {
+    "start": "开始语音输入",
+    "listening": "正在倾听...",
+    "transcript": "转录结果：",
+    "send_hint": "按 Enter 发送",
+    "no_speech": "未检测到语音",
+    "error": "错误",
+    "unknown_error": "未知错误",
+    "transcription_error": "转录错误",
+    "connection_timeout": "连接超时",
+    "service_connection_failed": "无法连接到语音服务",
+    "connection_failed": "语音连接失败",
+    "not_connected": "未连接到服务器",
+    "service_timeout": "转录服务超时",
+    "mic_denied": "麦克风访问被拒绝",
+    "not_configured": "语音未配置（缺少 API 密钥）",
+    "rate_limit": "超过频率限制",
+    "missing_key_hint": "语音功能已禁用 - 请在 .env 中设置 DEEPGRAM_API_KEY"
+  },
+  "sessions": {
+    "all_sessions": "所有会话",
+    "no_active": "暂无活动会话",
+    "waiting": "等待活动中",
+    "waiting_hint": "开始使用 Claude Code 以在此查看事件",
+    "no_activity_yet": "暂无活动记录",
+    "jump_latest": "跳转到最新",
+    "new_zone": "新区域",
+    "indicator_thinking": "Claude 正在思考中",
+    "you": "你"
+  },
+  "sessions_list": {
+    "click_new": "点击 \"+ 新建\" 以开始",
+    "session_count": "{{count}} 个会话",
+    "session_count_plural": "{{count}} 个会话",
+    "working_count": "，{{count}} 个正在工作",
+    "needs_attention": "⚡ 需要注意",
+    "waiting_permission": "⏳ 等待权限：{{tool}}",
+    "unknown_tool": "未知",
+    "using_tool": "正在使用 {{tool}}",
+    "offline_last": "离线 · 上次活动 {{time}}",
+    "offline_restart": "离线 - 点击 🔄 重启",
+    "ready": "就绪",
+    "not_linked": "尚未关联",
+    "labels": {
+      "name": "名称",
+      "status": "状态",
+      "tmux": "tmux",
+      "claude_id": "Claude ID",
+      "dir": "目录",
+      "last_active": "最后活动",
+      "last_prompt": "上次提示"
+    },
+    "actions": {
+      "restart": "重启会话",
+      "rename": "重命名",
+      "delete": "删除"
+    },
+    "rename_prompt": "请输入新名称：",
+    "delete_confirm": "确定要删除会话 \"{{name}}\" 吗？",
+    "all_sessions": "所有会话",
+    "select_hint": "选择一个会话以发送提示词",
+    "create_failed": "创建会话失败：{{error}}"
+  },
+  "feed": {
+    "show_content": "显示详细内容",
+    "show_more": "查看更多",
+    "hide_content": "隐藏内容",
+    "hide_more": "收起",
+    "search_mode": "搜索模式",
+    "query": "查询：{{query}}",
+    "pattern": "模式"
+  },
+  "keybinds": {
+    "focus_toggle": {
+      "name": "切换焦点",
+      "desc": "在 3D 场景与活动流之间切换"
+    },
+    "voice_toggle": {
+      "name": "语音输入",
+      "desc": "开始/停止录音"
+    },
+    "add_btn": "添加快捷键",
+    "reset_btn": "重置为默认",
+    "press_key": "按下按键..."
+  },
+  "context_menu": {
+    "create_zone": "创建区域",
+    "command": "命令",
+    "info": "信息",
+    "delete_zone": "删除区域",
+    "move_dismiss": "移动鼠标以关闭"
+  },
+  "zone_info": {
+    "directory": "目录",
+    "tmux_session": "tmux 会话",
+    "created": "创建时间",
+    "last_activity": "最后活动",
+    "current_tool": "当前工具",
+    "statistics": "统计数据",
+    "tools_used": "使用的工具",
+    "files_touched": "修改的文件",
+    "subagents": "子代理",
+    "token_usage": "Token 使用量",
+    "current_conversation": "当前对话",
+    "cumulative": "会话累计",
+    "git_status": "Git 状态",
+    "not_git_repo": "非 Git 仓库",
+    "identifiers": "标识符",
+    "managed_id": "Managed ID",
+    "claude_session": "Claude 会话",
+    "staged": "暂存 (Staged)",
+    "unstaged": "未暂存 (Unstaged)",
+    "untracked": "未跟踪 (Untracked)",
+    "files": "个文件",
+    "working_tree_clean": "工作区干净",
+    "lines": "行",
+    "more": "... 以及另外 {{count}} 个"
+  },
+  "modals": {
+    "new_zone": {
+      "title": "新区域",
+      "directory": "目录",
+      "directory_placeholder": "例如 /home/user/my-project",
+      "default": "默认",
+      "name": "名称",
+      "name_placeholder": "根据目录自动填充...",
+      "options": "选项",
+      "continue": "继续 (Continue) `-c`",
+      "skip_perms": "跳过权限检查",
+      "chrome": "Chrome 浏览器",
+      "other_placeholder": "在此输入..."
+    },
+    "settings": {
+      "title": "设置",
+      "audio": "音频",
+      "volume": "音量",
+      "spatial_audio": "空间音频",
+      "spatial_hint": "音量和左右声道根据区域位置变化",
+      "privacy": "隐私",
+      "streaming_mode": "直播模式",
+      "streaming_hint": "隐藏用户名以保护隐私",
+      "world": "世界",
+      "grid_size": "网格大小",
+      "grid_hint": "从中心向外的六边形环数。越大空间越广，可能影响性能。",
+      "agent_connection": "代理连接",
+      "agent_hint": "Vibecraft 代理运行的端口。更改后需要刷新页面。",
+      "sessions": "会话",
+      "refresh_sessions": "刷新会话",
+      "keyboard_shortcuts": "键盘快捷键",
+      "shortcuts_hint": "点击快捷键进行修改。按下新的按键组合，或按 Esc 取消。",
+      "language": "语言",
+      "port_reload_confirm": "端口已更改为 {{port}}。重新加载页面以连接到新端口？"
+    },
+    "about": {
+      "title": "关于 Vibecraft",
+      "description": "Vibecraft 是一个用于 Claude Code 的 3D 可视化应用。",
+      "subtitle": "实时观察并管理你的 Claude - 现已支持六边形网格！",
+      "sync_note": "Vibecraft 与运行在你本地机器上的 Claude Code 实例同步。任何文件或代码都不会被发送到 Web 服务器。",
+      "commands": "命令",
+      "cmd_start": "启动服务器",
+      "cmd_doctor": "诊断问题",
+      "cmd_setup": "重新安装钩子",
+      "cmd_uninstall": "移除钩子",
+      "troubleshooting": "故障排除",
+      "troubleshooting_text": "如果某个区域卡住了，Claude Code 可能正在等待输入或处于未知状态。连接到 tmux 会话以查看发生了什么：",
+      "cmd_tmux_ls": "列出所有会话",
+      "cmd_tmux_attach": "连接到指定会话",
+      "voice_input": "语音输入",
+      "voice_hint": "若要启用语音输入，请将 Deepgram API 密钥添加到 .env 文件中：",
+      "footer_credit": "Elysian Labs"
+    },
+    "question": {
+      "title": "问题",
+      "header": "Claude 需要输入",
+      "other_label": "或者输入你自己的回复：",
+      "other_placeholder": "在此输入...",
+      "skip": "跳过"
+    },
+    "permission": {
+      "title": "需要权限",
+      "header": "允许使用 {{tool}} 吗？"
+    },
+    "zone_info": {
+      "title": "区域信息"
+    },
+    "text_label": {
+      "title": "添加标签",
+      "placeholder": "在此输入文本...",
+      "char_count": "{{count}}/500",
+      "hint": "Enter 键保存，Shift+Enter 换行"
+    },
+    "timeout": {
+      "title": "区域无响应",
+      "text": "区域启动时间超过预期。Claude Code 可能处于卡死或等待输入状态。",
+      "hint": "请同时确保你的 Claude Code 是最新版本。"
+    },
+    "notifications": {
+      "lines": "{{count}} 行",
+      "matches": "{{count}} 个匹配",
+      "files": "{{count}} 个文件"
+    },
+    "draw": {
+      "eraser": "橡皮擦",
+      "clear_all": "清除全部",
+      "smaller": "缩小",
+      "larger": "放大",
+      "toggle_3d": "切换 3D 堆叠",
+      "colors": {
+        "cyan": "青色",
+        "sky": "天蓝",
+        "blue": "蓝色",
+        "indigo": "靛蓝",
+        "purple": "紫色",
+        "teal": "水鸭色"
+      }
+    },
+    "zone_command": {
+      "hint": "按 Enter 发送",
+      "placeholder": "命令..."
+    },
+    "version": {
+      "title_required": "需要更新",
+      "title_available": "有更新可用",
+      "unsupported": "你的版本 ({{current}}) 不再受支持。",
+      "new_available": "新版本可用：{{latest}} (当前版本 {{current}})",
+      "release_notes": "发布日志",
+      "dismiss": "忽略",
+      "copied": "指令已复制到剪贴板！"
+    }
+  },
+  "stations": {
+    "center": "中心",
+    "bookshelf": "资料库",
+    "desk": "工作台",
+    "workbench": "工具台",
+    "terminal": "终端",
+    "scanner": "扫描仪",
+    "antenna": "天线",
+    "portal": "传送门",
+    "taskboard": "任务板"
+  },
+  "offline": {
+    "banner": "未连接到本地服务器",
+    "overlay_title": "Vibecraft!",
+    "overlay_desc": "Vibecraft 是一款用于观察和管理 Claude Code 实例的 3D 应用。",
+    "overlay_privacy": "Vibecraft 与你本地机器上的 CC 实例同步。Vibecraft 仅作为界面使用 - 不会将文件或代码发送到此服务器。",
+    "get_started": "开始使用：",
+    "explore": "探索"
+  },
+  "timeline": {
+    "finished": "已完成",
+    "session_start": "会话开始",
+    "prompt": "提示词",
+    "notification": "通知"
+  },
+  "tools": {
+    "updating_tasks": "更新任务中"
+  },
+  "prompt_placeholder": "在此输入提示词...",
+  "main": {
+    "target_managed": "提示词将发送至 {{name}}",
+    "target_session": "提示词将发送至会话 {{id}}",
+    "sessions_count": "({{count}} 个会话)",
+    "status": {
+      "working": "正在工作",
+      "ready": "就绪",
+      "thinking": "正在思考",
+      "idle": "空闲",
+      "waiting": "等待中",
+      "offline": "离线",
+      "connecting": "连接中...",
+      "disconnected": "已断开连接"
+    },
+    "activity": {
+      "using_tool": "正在使用 {{tool}}...",
+      "tool_complete": "{{tool}} 完成",
+      "tool_failed": "{{tool}} 失败",
+      "processing": "正在处理提示词...",
+      "session_started": "会话已启动",
+      "canceled": "正在发送取消指令...",
+      "cancel_failed": "取消失败",
+      "sent_to": "已发送至 {{name}}!",
+      "failed_to_send": "发送失败",
+      "sent_to_claude": "已发送至 Claude!",
+      "saved_to": "已保存至 {{path}}",
+      "tmux_error": "已保存 (tmux 错误: {{error}})",
+      "stopped": "已停止"
+    },
+    "camera": {
+      "modes": {
+        "focused": "聚焦",
+        "overview": "概览",
+        "follow": "跟随"
+      },
+      "labels": {
+        "all_sessions": "所有会话",
+        "auto_tracking": "自动追踪",
+        "none": "无"
+      }
+    },
+    "error": {
+      "server_connection": "无法连接到 Vibecraft 服务器",
+      "connection_error": "连接错误"
+    }
+  }
+}

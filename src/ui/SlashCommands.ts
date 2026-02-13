@@ -5,25 +5,27 @@
  * Commands are sent directly to Claude Code via tmux.
  */
 
+import i18next from '../i18n'
+
 // Known Claude Code slash commands
 export const SLASH_COMMANDS = [
-  { command: '/clear', description: 'Clear conversation history' },
-  { command: '/compact', description: 'Compact conversation to save context' },
-  { command: '/config', description: 'View/edit configuration' },
-  { command: '/cost', description: 'Show token usage and cost' },
-  { command: '/doctor', description: 'Run diagnostics' },
-  { command: '/help', description: 'Show help' },
-  { command: '/init', description: 'Initialize CLAUDE.md' },
-  { command: '/login', description: 'Login to Anthropic' },
-  { command: '/logout', description: 'Logout from Anthropic' },
-  { command: '/memory', description: 'Edit CLAUDE.md memory' },
-  { command: '/model', description: 'Switch model' },
-  { command: '/permissions', description: 'View/edit permissions' },
-  { command: '/pr-comments', description: 'View PR comments' },
-  { command: '/review', description: 'Request code review' },
-  { command: '/status', description: 'Show status' },
-  { command: '/terminal-setup', description: 'Setup terminal integration' },
-  { command: '/vim', description: 'Toggle vim mode' },
+  { command: '/clear', description: i18next.t('slashes.clear') },
+  { command: '/compact', description: i18next.t('slashes.compact') },
+  { command: '/config', description: i18next.t('slashes.config') },
+  { command: '/cost', description: i18next.t('slashes.cost') },
+  { command: '/doctor', description: i18next.t('slashes.doctor') },
+  { command: '/help', description: i18next.t('slashes.help') },
+  { command: '/init', description: i18next.t('slashes.init') },
+  { command: '/login', description: i18next.t('slashes.login') },
+  { command: '/logout', description: i18next.t('slashes.logout') },
+  { command: '/memory', description: i18next.t('slashes.memory') },
+  { command: '/model', description: i18next.t('slashes.model') },
+  { command: '/permissions', description: i18next.t('slashes.permissions') },
+  { command: '/pr-comments', description: i18next.t('slashes.pr_comments') },
+  { command: '/review', description: i18next.t('slashes.review') },
+  { command: '/status', description: i18next.t('slashes.status') },
+  { command: '/terminal-setup', description: i18next.t('slashes.terminal_setup') },
+  { command: '/vim', description: i18next.t('slashes.vim') },
 ] as const
 
 export type SlashCommand = typeof SLASH_COMMANDS[number]

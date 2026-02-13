@@ -16,6 +16,7 @@ import { VoiceInput } from '../audio/VoiceInput'
 import { soundManager } from '../audio/SoundManager'
 import type { EventClient } from '../events/EventClient'
 import { keybindManager } from './KeybindConfig'
+import i18next from '../i18n'
 
 /**
  * Check if we're running on the hosted vibecraft.sh site
@@ -129,7 +130,7 @@ export function setupVoiceControl(deps: VoiceControlDeps): VoiceState | null {
         if (transcriptEl) transcriptEl.classList.add('visible')
         if (voiceControlEl) voiceControlEl.classList.add('recording')
         if (transcriptLabelEl) {
-          transcriptLabelEl.innerHTML = '<span class="recording-dot"></span> Listening...'
+          transcriptLabelEl.innerHTML = `<span class="recording-dot"></span> ${i18next.t('voice.listening')}`
         }
         break
       case 'error':
@@ -137,9 +138,9 @@ export function setupVoiceControl(deps: VoiceControlDeps): VoiceState | null {
         voiceBars?.forEach(bar => { bar.style.height = '8px' })
         if (transcriptEl && transcriptTextEl) {
           transcriptEl.classList.add('visible')
-          transcriptTextEl.textContent = error || 'Unknown error'
+          transcriptTextEl.textContent = error || i18next.t('voice.unknown_error')
           if (transcriptLabelEl) {
-            transcriptLabelEl.innerHTML = '⚠️ Error'
+            transcriptLabelEl.innerHTML = '⚠️ ' + i18next.t('voice.error')
           }
           setTimeout(() => {
             if (status === 'error') {
@@ -226,9 +227,9 @@ export function setupVoiceControl(deps: VoiceControlDeps): VoiceState | null {
 
         if (!transcript && transcriptEl && transcriptTextEl) {
           transcriptEl.classList.add('visible')
-          transcriptTextEl.textContent = 'No speech detected'
+          transcriptTextEl.textContent = i18next.t('voice.no_speech')
           if (transcriptLabelEl) {
-            transcriptLabelEl.innerHTML = 'ℹ️ Info'
+            transcriptLabelEl.innerHTML = 'ℹ️ ' + i18next.t('common.info')
           }
           setTimeout(() => {
             transcriptEl.classList.remove('visible')
@@ -261,7 +262,7 @@ export function setupVoiceControl(deps: VoiceControlDeps): VoiceState | null {
       } else if (data.type === 'voice_transcript') {
         handleTranscript(data)
       } else if (data.type === 'voice_error') {
-        setError(data.error || 'Transcription error')
+        setError(data.error || i18next.t('voice.transcription_error'))
       }
     } catch {
       // Ignore non-JSON messages
@@ -285,9 +286,9 @@ export function setupVoiceControl(deps: VoiceControlDeps): VoiceState | null {
     // Update transcript display (floating label)
     if (transcriptTextEl) {
       const displayText = accumulatedTranscript + (currentInterim ? (accumulatedTranscript ? ' ' : '') + currentInterim : '')
-      transcriptTextEl.textContent = displayText || 'Listening...'
+      transcriptTextEl.textContent = displayText || i18next.t('voice.listening')
       if (transcriptLabelEl) {
-        transcriptLabelEl.textContent = data.is_final ? 'Transcript:' : 'Listening...'
+        transcriptLabelEl.textContent = data.is_final ? i18next.t('voice.transcript') : i18next.t('voice.listening')
       }
     }
 
@@ -320,7 +321,7 @@ export function setupVoiceControl(deps: VoiceControlDeps): VoiceState | null {
         cloudVoiceSocket = new WebSocket(getCloudVoiceUrl())
 
         await new Promise<void>((resolve, reject) => {
-          const timeout = setTimeout(() => reject(new Error('Connection timeout')), 5000)
+          const timeout = setTimeout(() => reject(new Error(i18next.t('voice.connection_timeout'))), 5000)
 
           cloudVoiceSocket!.onopen = () => {
             clearTimeout(timeout)
@@ -330,7 +331,7 @@ export function setupVoiceControl(deps: VoiceControlDeps): VoiceState | null {
 
           cloudVoiceSocket!.onerror = () => {
             clearTimeout(timeout)
-            reject(new Error('Failed to connect to voice service'))
+            reject(new Error(i18next.t('voice.service_connection_failed')))
           }
 
           cloudVoiceSocket!.onmessage = handleCloudVoiceMessage
@@ -342,14 +343,14 @@ export function setupVoiceControl(deps: VoiceControlDeps): VoiceState | null {
           }
         })
       } catch (e) {
-        setError(e instanceof Error ? e.message : 'Voice connection failed')
+        setError(e instanceof Error ? e.message : i18next.t('voice.connection_failed'))
         return false
       }
     } else {
       // Local mode - use EventClient socket
       const socket = client.socket
       if (!socket || socket.readyState !== WebSocket.OPEN) {
-        setError('Not connected to server')
+        setError(i18next.t('voice.not_connected'))
         return false
       }
       socket.send(JSON.stringify({ type: 'voice_start' }))
@@ -357,7 +358,7 @@ export function setupVoiceControl(deps: VoiceControlDeps): VoiceState | null {
 
     connectionTimeout = window.setTimeout(() => {
       if (status === 'connecting') {
-        setError('Transcription service timeout')
+        setError(i18next.t('voice.service_timeout'))
       }
     }, 5000)
 
@@ -373,7 +374,7 @@ export function setupVoiceControl(deps: VoiceControlDeps): VoiceState | null {
         clearTimeout(connectionTimeout)
         connectionTimeout = null
       }
-      setError('Microphone access denied')
+      setError(i18next.t('voice.mic_denied'))
       if (voiceSocket?.readyState === WebSocket.OPEN) {
         voiceSocket.send(JSON.stringify({ type: 'voice_stop' }))
       }
@@ -474,12 +475,12 @@ export function setupVoiceControl(deps: VoiceControlDeps): VoiceState | null {
       syncState()
     } else if (data.type === 'voice_error') {
       const payload = data.payload as { error?: string }
-      const errorMsg = payload?.error || 'Transcription error'
+      const errorMsg = payload?.error || i18next.t('voice.transcription_error')
 
       if (errorMsg.includes('not configured')) {
-        setError('Voice not configured (missing API key)')
+        setError(i18next.t('voice.not_configured'))
       } else if (errorMsg.includes('rate') || errorMsg.includes('limit')) {
-        setError('Rate limit exceeded')
+        setError(i18next.t('voice.rate_limit'))
       } else {
         setError(errorMsg)
       }

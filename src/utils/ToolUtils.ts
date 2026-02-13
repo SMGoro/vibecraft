@@ -1,3 +1,5 @@
+import i18next from '../i18n'
+
 /**
  * ToolUtils - Pure utility functions for tool display
  *
@@ -81,7 +83,7 @@ export function getToolContext(tool: string, input: Record<string, unknown>): st
       return desc || null
     }
     case 'TodoWrite':
-      return 'Updating tasks'
+      return i18next.t('tools.updating_tasks')
     default:
       return null
   }

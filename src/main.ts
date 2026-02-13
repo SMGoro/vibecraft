@@ -60,6 +60,7 @@ import { checkForUpdates } from './ui/VersionChecker'
 import { drawMode } from './ui/DrawMode'
 import { setupTextLabelModal, showTextLabelModal } from './ui/TextLabelModal'
 import { createSessionAPI, type SessionAPI } from './api'
+import i18next, { initI18n, translatePage } from './i18n'
 
 // ============================================================================
 // Configuration
@@ -192,12 +193,12 @@ function renderManagedSessions(): void {
     const count = state.managedSessions.length
     const working = state.managedSessions.filter(s => s.status === 'working').length
     if (count === 0) {
-      allCount.textContent = 'Click "+ New" to start'
+      allCount.textContent = i18next.t('sessions_list.click_new')
     } else if (working > 0) {
-      allCount.textContent = `${count} session${count > 1 ? 's' : ''}, ${working} working`
+      allCount.textContent = i18next.t('sessions_list.session_count', { count }) + i18next.t('sessions_list.working_count', { count: working })
       allCount.className = 'session-detail working'
     } else {
-      allCount.textContent = `${count} session${count > 1 ? 's' : ''}`
+      allCount.textContent = i18next.t('sessions_list.session_count', { count })
       allCount.className = 'session-detail'
     }
   }
@@ -233,15 +234,15 @@ function renderManagedSessions(): void {
     const projectName = session.cwd ? session.cwd.split('/').pop() : ''
     let detail = ''
     if (needsAttention) {
-      detail = '⚡ Needs attention'
+      detail = i18next.t('sessions_list.needs_attention')
     } else if (session.status === 'waiting') {
-      detail = `⏳ Waiting for permission: ${session.currentTool || 'Unknown'}`
+      detail = i18next.t('sessions_list.waiting_permission', { tool: session.currentTool || i18next.t('sessions_list.unknown_tool') })
     } else if (session.currentTool) {
-      detail = `Using ${session.currentTool}`
+      detail = i18next.t('sessions_list.using_tool', { tool: session.currentTool })
     } else if (session.status === 'offline') {
-      detail = lastActive ? `Offline · was ${lastActive}` : 'Offline - click 🔄 to restart'
+      detail = lastActive ? i18next.t('sessions_list.offline_last', { time: lastActive }) : i18next.t('sessions_list.offline_restart')
     } else {
-      detail = projectName ? `📁 ${projectName}` : 'Ready'
+      detail = projectName ? `📁 ${projectName}` : i18next.t('sessions_list.ready')
     }
     const detailClass = session.status === 'working' ? 'session-detail working'
       : session.status === 'waiting' ? 'session-detail attention'
@@ -256,13 +257,13 @@ function renderManagedSessions(): void {
 
     // Build detailed tooltip
     const tooltipParts = [
-      `Name: ${session.name}`,
-      `Status: ${session.status}`,
-      `tmux: ${session.tmuxSession}`,
-      session.claudeSessionId ? `Claude ID: ${session.claudeSessionId.slice(0, 12)}...` : 'Not linked yet',
-      session.cwd ? `Dir: ${session.cwd}` : '',
-      session.lastActivity ? `Last active: ${new Date(session.lastActivity).toLocaleString()}` : '',
-      lastPrompt ? `Last prompt: ${lastPrompt}` : '',
+      `${i18next.t('sessions_list.labels.name')}: ${session.name}`,
+      `${i18next.t('sessions_list.labels.status')}: ${session.status}`,
+      `${i18next.t('sessions_list.labels.tmux')}: ${session.tmuxSession}`,
+      session.claudeSessionId ? `${i18next.t('sessions_list.labels.claude_id')}: ${session.claudeSessionId.slice(0, 12)}...` : i18next.t('sessions_list.not_linked'),
+      session.cwd ? `${i18next.t('sessions_list.labels.dir')}: ${session.cwd}` : '',
+      session.lastActivity ? `${i18next.t('sessions_list.labels.last_active')}: ${new Date(session.lastActivity).toLocaleString()}` : '',
+      lastPrompt ? `${i18next.t('sessions_list.labels.last_prompt')}: ${lastPrompt}` : '',
     ].filter(Boolean)
     el.title = tooltipParts.join('\n')
 
@@ -275,9 +276,9 @@ function renderManagedSessions(): void {
         ${truncatedPrompt ? `<div class="session-prompt">💬 ${escapeHtml(truncatedPrompt)}</div>` : ''}
       </div>
       <div class="session-actions">
-        ${session.status === 'offline' ? `<button class="restart-btn" title="Restart session">🔄</button>` : ''}
-        <button class="rename-btn" title="Rename">✏️</button>
-        <button class="delete-btn" title="Delete">🗑️</button>
+        ${session.status === 'offline' ? `<button class="restart-btn" title="${i18next.t('sessions_list.actions.restart')}">🔄</button>` : ''}
+        <button class="rename-btn" title="${i18next.t('sessions_list.actions.rename')}">✏️</button>
+        <button class="delete-btn" title="${i18next.t('sessions_list.actions.delete')}">🗑️</button>
       </div>
     `
 
@@ -291,7 +292,7 @@ function renderManagedSessions(): void {
     // Rename button
     el.querySelector('.rename-btn')?.addEventListener('click', (e) => {
       e.stopPropagation()
-      const newName = prompt('Enter new name:', session.name)
+      const newName = prompt(i18next.t('sessions_list.rename_prompt'), session.name)
       if (newName && newName !== session.name) {
         renameManagedSession(session.id, newName)
       }
@@ -300,7 +301,7 @@ function renderManagedSessions(): void {
     // Delete button
     el.querySelector('.delete-btn')?.addEventListener('click', (e) => {
       e.stopPropagation()
-      if (confirm(`Delete session "${session.name}"?`)) {
+      if (confirm(i18next.t('sessions_list.delete_confirm', { name: session.name }))) {
         deleteManagedSession(session.id)
       }
     })
@@ -355,8 +356,8 @@ function selectManagedSession(sessionId: string | null): void {
   if (!sessionId) {
     const targetEl = document.getElementById('prompt-target')
     if (targetEl) {
-      targetEl.innerHTML = '<span style="color: rgba(255,255,255,0.4)">all sessions</span>'
-      targetEl.title = 'Select a session to send prompts'
+      targetEl.innerHTML = `<span style="color: rgba(255,255,255,0.4)">${i18next.t('sessions_list.all_sessions')}</span>`
+      targetEl.title = i18next.t('sessions_list.select_hint')
     }
   }
   // Note: when sessionId is set, focusSession() handles the prompt target update
@@ -386,7 +387,7 @@ async function createManagedSession(
     if (!state.client?.isConnected) {
       showOfflineBanner()
     } else {
-      alert(`Failed to create session: ${data.error}`)
+      alert(i18next.t('sessions_list.create_failed', { error: data.error }))
     }
     // Clean up pending zone on failure
     if (pendingZoneId && state.scene) {
@@ -1155,8 +1156,8 @@ function setupClickToPrompt(): void {
             event.clientX,
             event.clientY,
             [
-              { key: 'E', label: `Edit "${existingTile.text}"`, action: 'edit_text_tile' },
-              { key: 'D', label: 'Delete label', action: 'delete_text_tile', danger: true },
+              { key: 'E', label: `${i18next.t('common.edit')} "${existingTile.text}"`, action: 'edit_text_tile' },
+              { key: 'D', label: i18next.t('common.delete_label', { defaultValue: 'Delete label' }), action: 'delete_text_tile', danger: true },
             ],
             { textTileId: existingTile.id }
           )
@@ -1166,8 +1167,8 @@ function setupClickToPrompt(): void {
             event.clientX,
             event.clientY,
             [
-              { key: 'C', label: 'Create zone', action: 'create' },
-              { key: 'T', label: 'Add text label', action: 'create_text_tile' },
+              { key: 'C', label: i18next.t('context_menu.create_zone'), action: 'create' },
+              { key: 'T', label: i18next.t('modals.text_label.title'), action: 'create_text_tile' },
             ],
             { worldPosition: { x: point.x, z: point.z }, hexPosition: hex }
           )
@@ -1194,9 +1195,9 @@ function setupClickToPrompt(): void {
         event.clientX,
         event.clientY,
         [
-          { key: 'C', label: `Command`, action: 'command' },
-          { key: 'I', label: `Info`, action: 'info' },
-          { key: 'D', label: `Dismiss "${zoneName}"`, action: 'delete', danger: true },
+          { key: 'C', label: i18next.t('context_menu.command'), action: 'command' },
+          { key: 'I', label: i18next.t('context_menu.info'), action: 'info' },
+          { key: 'D', label: `${i18next.t('common.dismiss')} "${zoneName}"`, action: 'delete', danger: true },
         ],
         { zoneId: sessionId }
       )
@@ -1217,16 +1218,16 @@ function updateKeybindHelper(mode: CameraMode): void {
   if (modeLabel && modeDesc) {
     switch (mode) {
       case 'focused':
-        modeLabel.textContent = 'Focused'
-        modeDesc.textContent = state.focusedSessionId?.slice(0, 8) || 'none'
+        modeLabel.textContent = i18next.t('camera.modes.focused')
+        modeDesc.textContent = state.focusedSessionId?.slice(0, 8) || i18next.t('camera.labels.none')
         break
       case 'overview':
-        modeLabel.textContent = 'Overview'
-        modeDesc.textContent = 'all sessions'
+        modeLabel.textContent = i18next.t('camera.modes.overview')
+        modeDesc.textContent = i18next.t('camera.labels.all_sessions')
         break
       case 'follow-active':
-        modeLabel.textContent = 'Follow'
-        modeDesc.textContent = 'auto-tracking'
+        modeLabel.textContent = i18next.t('camera.modes.follow')
+        modeDesc.textContent = i18next.t('camera.labels.auto_tracking')
         break
     }
   }
@@ -1637,13 +1638,13 @@ function updatePromptTarget(sessionId: string, color: number): void {
       <span class="target-badge" style="background: ${colorHex}">${index}</span>
       <span style="color: ${colorHex}">${escapeHtml(managed.name)}</span>
     `
-    targetEl.title = `Prompts will be sent to ${managed.name}`
+    targetEl.title = i18next.t('main.target_managed', { name: managed.name })
   } else {
     targetEl.innerHTML = `
       <span class="target-dot" style="background: ${colorHex}"></span>
       <span>→ ${sessionId.slice(0, 8)}</span>
     `
-    targetEl.title = `Prompts will be sent to session ${sessionId}`
+    targetEl.title = i18next.t('main.target_session', { id: sessionId })
   }
 }
 
@@ -1655,7 +1656,7 @@ function updateSessionList(): void {
   const count = state.sessions.size
   const sessionEl = document.getElementById('session-id')
   if (sessionEl && count > 1) {
-    sessionEl.title += ` (${count} sessions)`
+    sessionEl.title += ` ${i18next.t('main.sessions_count', { count })}`
   }
 }
 
@@ -1666,6 +1667,17 @@ function updateSessionList(): void {
 function updateStatus(connected: boolean, text?: string) {
   const dot = document.getElementById('status-dot')
   const textEl = document.getElementById('status-text')
+
+  const statusMap: Record<string, string> = {
+    'Working': 'main.status.working',
+    'Ready': 'main.status.ready',
+    'Thinking': 'main.status.thinking',
+    'Idle': 'main.status.idle',
+    'Connecting...': 'main.status.connecting',
+    'Disconnected': 'main.status.disconnected'
+  }
+
+  const translatedText = text && statusMap[text] ? i18next.t(statusMap[text]) : text
 
   if (dot) {
     // Add 'working' class when actively working, 'connected' when idle, nothing when disconnected
@@ -1681,7 +1693,7 @@ function updateStatus(connected: boolean, text?: string) {
   if (textEl) {
     // Only show text when disconnected or connecting
     if (!connected || text === 'Connecting...') {
-      textEl.textContent = ` · ${text || 'Disconnected'}`
+      textEl.textContent = ` · ${translatedText || i18next.t('main.status.disconnected')}`
     } else {
       textEl.textContent = ''
     }
@@ -1822,7 +1834,7 @@ function handleEvent(event: ClaudeEvent) {
         }
       }
 
-      updateActivity(`Using ${e.tool}...`)
+      updateActivity(i18next.t('main.activity.using_tool', { tool: e.tool }))
       updateStatus(true, 'Working')
 
       // Track file access
@@ -1846,7 +1858,7 @@ function handleEvent(event: ClaudeEvent) {
       }
 
       updateStats()
-      updateActivity(e.success ? `${e.tool} complete` : `${e.tool} failed`)
+      updateActivity(e.success ? i18next.t('main.activity.tool_complete', { tool: e.tool }) : i18next.t('main.activity.tool_failed', { tool: e.tool }))
       break
     }
 
@@ -1856,7 +1868,7 @@ function handleEvent(event: ClaudeEvent) {
 
       // Update UI badge (zone attention set by zoneHandlers)
       updateAttentionBadge()
-      updateActivity('Idle')
+      updateActivity(i18next.t('main.status.idle'))
       updateStatus(true, 'Ready')
       break
     }
@@ -1875,7 +1887,7 @@ function handleEvent(event: ClaudeEvent) {
 
       // Update UI badge (zone attention cleared by zoneHandlers)
       updateAttentionBadge()
-      updateActivity('Processing prompt...')
+      updateActivity(i18next.t('main.activity.processing'))
       updateStatus(true, 'Thinking')
       break
     }
@@ -1885,7 +1897,7 @@ function handleEvent(event: ClaudeEvent) {
       session.stats.toolsUsed = 0
       session.stats.filesTouched.clear()
       updateStats()
-      updateActivity('Session started')
+      updateActivity(i18next.t('main.activity.session_started'))
       break
 
     case 'notification':
@@ -2035,7 +2047,7 @@ function setupPromptForm() {
   if (cancelBtn) {
     cancelBtn.addEventListener('click', async () => {
       if (status) {
-        status.textContent = 'Cancelling...'
+        status.textContent = i18next.t('main.activity.canceled')
         status.className = ''
       }
       try {
@@ -2043,16 +2055,16 @@ function setupPromptForm() {
         const data = await response.json()
         if (status) {
           if (data.ok) {
-            status.textContent = 'Cancelled!'
+            status.textContent = i18next.t('main.activity.stopped')
             status.className = 'success'
           } else {
-            status.textContent = data.error || 'Cancel failed'
+            status.textContent = data.error || i18next.t('main.activity.cancel_failed')
             status.className = 'error'
           }
         }
       } catch (error) {
         if (status) {
-          status.textContent = 'Connection error'
+          status.textContent = i18next.t('error.connection_error')
           status.className = 'error'
         }
       }
@@ -2080,7 +2092,7 @@ function setupPromptForm() {
 
     button.disabled = true
     if (status) {
-      status.textContent = send ? 'Sending to Claude...' : 'Saving...'
+      status.textContent = send ? i18next.t('main.activity.processing') : i18next.t('common.save') + '...'
       status.className = ''
     }
 
@@ -2092,7 +2104,7 @@ function setupPromptForm() {
         const session = state.managedSessions.find(s => s.id === state.selectedManagedSession)
         data = await sendPromptToManagedSession(prompt)
         if (data.ok && status) {
-          status.textContent = `Sent to ${session?.name || 'session'}!`
+          status.textContent = i18next.t('main.activity.sent_to', { name: session?.name || 'session' })
           status.className = 'success'
           // Add to history and reset navigation
           state.promptHistory.push(prompt)
@@ -2102,7 +2114,7 @@ function setupPromptForm() {
           input.style.height = 'auto'
           state.feedManager?.scrollToBottom()
         } else if (!data.ok && status) {
-          status.textContent = data.error || 'Failed to send'
+          status.textContent = data.error || i18next.t('main.activity.failed_to_send')
           status.className = 'error'
         }
       } else {
@@ -2124,26 +2136,26 @@ function setupPromptForm() {
           state.feedManager?.scrollToBottom()
           if (status) {
             if (data.sent) {
-              status.textContent = 'Sent to Claude!'
+              status.textContent = i18next.t('main.activity.sent_to_claude')
             } else if (data.tmuxError) {
-              status.textContent = `Saved (tmux error: ${data.tmuxError})`
+              status.textContent = i18next.t('main.activity.tmux_error', { error: data.tmuxError })
               status.className = 'error'
               return
             } else {
-              status.textContent = `Saved to ${data.saved}`
+              status.textContent = i18next.t('main.activity.saved_to', { path: data.saved })
             }
             status.className = 'success'
           }
         } else {
           if (status) {
-            status.textContent = data.error || 'Failed to send'
+            status.textContent = data.error || i18next.t('main.activity.failed_to_send')
             status.className = 'error'
           }
         }
       }
     } catch (error) {
       if (status) {
-        status.textContent = 'Connection error'
+        status.textContent = i18next.t('error.connection_error')
         status.className = 'error'
       }
     } finally {
@@ -2220,10 +2232,10 @@ function setupTerminalToggle() {
         // Auto-scroll to bottom
         panel.scrollTop = panel.scrollHeight
       } else if (data.error) {
-        output.textContent = `Error: ${data.error}`
+        output.textContent = `${i18next.t('common.error')}: ${data.error}`
       }
     } catch (e) {
-      output.textContent = 'Failed to connect to server'
+      output.textContent = i18next.t('error.server_connection')
     }
   }
 }
@@ -2265,6 +2277,7 @@ function setupSettingsModal(): void {
   const gridSizeSlider = document.getElementById('settings-grid-size') as HTMLInputElement | null
   const gridSizeValue = document.getElementById('settings-grid-size-value')
   const refreshBtn = document.getElementById('settings-refresh-sessions')
+  const languageSelect = document.getElementById('settings-language') as HTMLSelectElement | null
 
   if (!modal) return
 
@@ -2320,6 +2333,25 @@ function setupSettingsModal(): void {
     const enabled = savedStreaming === 'true'
     if (streamingCheckbox) streamingCheckbox.checked = enabled
     applyStreamingMode(enabled)
+  }
+
+  // Language setup
+  if (languageSelect) {
+    languageSelect.value = i18next.language.split('-')[0] // handle 'en-US' -> 'en'
+    languageSelect.addEventListener('change', async () => {
+      const newLang = languageSelect.value
+      await i18next.changeLanguage(newLang)
+      translatePage()
+      
+      // Update dynamic elements
+      updateStats()
+      renderManagedSessions()
+      if (state.scene?.stationPanels) {
+        state.scene.stationPanels.updateAll()
+      }
+      
+      console.log('Language changed to:', newLang)
+    })
   }
 
   // Apply streaming mode (hide/show username)
@@ -2418,7 +2450,7 @@ function setupSettingsModal(): void {
     const newPort = parseInt(portInput.value, 10)
     if (newPort && newPort > 0 && newPort <= 65535 && newPort !== AGENT_PORT) {
       localStorage.setItem('vibecraft-agent-port', String(newPort))
-      if (confirm(`Port changed to ${newPort}. Reload page to connect to new port?`)) {
+      if (confirm(i18next.t('modals.settings.port_reload_confirm', { port: newPort }))) {
         window.location.reload()
       }
     }
@@ -2554,12 +2586,16 @@ function hideNotConnectedOverlay(): void {
 // Initialization
 // ============================================================================
 
-function init() {
+async function init() {
   const container = document.getElementById('canvas-container')
   if (!container) {
     console.error('Canvas container not found')
     return
   }
+
+  // Initialize i18n
+  await initI18n()
+  translatePage()
 
   // Create scene (zones and Claudes created dynamically per session)
   state.scene = new WorkshopScene(container)
@@ -2980,14 +3016,14 @@ function init() {
           if (!health.voiceEnabled) {
             if (voiceControl) {
               voiceControl.classList.add('disabled')
-              voiceControl.title = 'Voice disabled - set DEEPGRAM_API_KEY in .env'
+              voiceControl.title = i18next.t('voice.missing_key_hint')
             }
             return
           }
         } catch {
           if (voiceControl) {
             voiceControl.classList.add('disabled')
-            voiceControl.title = 'Voice unavailable - server connection failed'
+            voiceControl.title = i18next.t('voice.service_connection_failed')
           }
           return
         }

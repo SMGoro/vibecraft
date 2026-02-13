@@ -7,6 +7,7 @@
 
 import * as THREE from 'three'
 import { soundManager } from '../audio/SoundManager'
+import i18next from '../i18n'
 
 // ============================================================================
 // Types
@@ -52,12 +53,12 @@ export function setupZoneCommandModal(): void {
           <span class="zone-command-dot"></span>
           <span class="zone-command-name"></span>
         </span>
-        <span class="zone-command-hint">Enter to send</span>
+        <span class="zone-command-hint">${i18next.t('modals.zone_command.hint')}</span>
       </div>
       <div class="zone-command-body">
         <textarea
           class="zone-command-input"
-          placeholder="Command..."
+          placeholder="${i18next.t('modals.zone_command.placeholder')}"
           rows="1"
         ></textarea>
         <button class="zone-command-send" type="button">
